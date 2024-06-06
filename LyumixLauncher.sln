@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.34909.67
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LyumixLauncher", "LyumixLauncher\LyumixLauncher.csproj", "{3C2AF3AB-0F0B-4D4D-9582-169C34AA8ADE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3C2AF3AB-0F0B-4D4D-9582-169C34AA8ADE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C2AF3AB-0F0B-4D4D-9582-169C34AA8ADE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C2AF3AB-0F0B-4D4D-9582-169C34AA8ADE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C2AF3AB-0F0B-4D4D-9582-169C34AA8ADE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4C0E7256-4CF9-4A5A-8D4B-5A64D0432807}
+	EndGlobalSection
+EndGlobal
