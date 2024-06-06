@@ -1,9 +1,4 @@
-﻿using Glimpse.Core.ClientScript;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Runtime.InteropServices;
-using Microsoft.Toolkit.Uwp.Notifications;
-using System.Windows.Forms;
+﻿using System.Runtime.InteropServices;
 
 namespace LyumixLauncher
 {
