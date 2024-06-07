@@ -1,14 +1,53 @@
+using System.Diagnostics;
+using System.IO;
+using System.Net;
 using System.Runtime.InteropServices;
+using System.Security.Policy;
 
 namespace LyumixLauncher
 {
     internal static class Program
     {
         public static LyumixLauncher launcher;
+        static string jsonLib = "https://github.com/MatterMoulder/LLupdate/raw/main/Newtonsoft.Json.dll";
+        static string versionFileUrl = "https://raw.githubusercontent.com/MatterMoulder/LLupdate/main/version.txt";
+        static string repoUrl = "https://api.github.com/repos/MatterMoulder/LLupdate/contents";
+        static string localVersionFile = "version.txt";
 
         [STAThread]
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
+            Thread.Sleep(500);
+            Process[] old_process = System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location));
+            Process[] old_updater_process = System.Diagnostics.Process.GetProcessesByName("LyumixLauncherUpdater.exe");
+            if ((old_process.Count() > 1) || (old_updater_process.Count() > 1))
+            {
+                return;
+            }
+#if !DEBUG
+            bool isUpdated = args.Contains("/updated");
+            bool startedInOffline = args.Contains("/offline");
+            if (!startedInOffline)
+            {
+                try
+                {
+                    string latestVersion = GetLatestVersion();
+                    string currentVersion = File.Exists(localVersionFile) ? File.ReadAllText(localVersionFile).Trim() : "0.0.0";
+                    
+                    if (latestVersion != currentVersion)
+                    {
+                        Console.WriteLine("Updating application...");
+                        Process.Start("LyumixLauncherUpdater.exe");
+                        return;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error checking for updates: {ex.Message}");
+                }
+            }
+#endif
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             ApplicationConfiguration.Initialize();
@@ -17,7 +56,6 @@ namespace LyumixLauncher
             {
                 Directory.CreateDirectory(UtilMan.modulePath);
             }
-
             bool alpha = new ModuleInstaller().ReinstallAll().Result;
             List<string> activeModules = UtilMan.GetAllStartUp();
             if (activeModules != null)
@@ -55,6 +93,15 @@ namespace LyumixLauncher
                 Application.Run(launcher);
             }
             Application.Run();
+        }
+
+        private static string GetLatestVersion()
+        {
+            using (WebClient client = new WebClient())
+            {
+                client.Headers.Add("User-Agent", "request"); // GitHub API requires a User-Agent header
+                return client.DownloadString(versionFileUrl).Trim();
+            }
         }
 
         private static void OpenItem_Click(object sender, EventArgs e)
