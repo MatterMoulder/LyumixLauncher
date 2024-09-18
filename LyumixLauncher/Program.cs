@@ -24,10 +24,11 @@ namespace LyumixLauncher
             {
                 return;
             }
+
+            bool startedInOffline = args.Contains("/offline");
 #if !DEBUG
             bool isUpdated = args.Contains("/updated");
-            bool startedInOffline = args.Contains("/offline");
-            if (!startedInOffline)
+            if (!startedInOffline || !isUpdated)
             {
                 try
                 {
@@ -52,11 +53,15 @@ namespace LyumixLauncher
             Application.SetCompatibleTextRenderingDefault(false);
             ApplicationConfiguration.Initialize();
             UtilMan.Init();
+            if (!startedInOffline)
+            {
+                await new ModuleInstaller().ReinstallAll();
+            }
+
             if (!Directory.Exists(UtilMan.modulePath))
             {
                 Directory.CreateDirectory(UtilMan.modulePath);
             }
-            bool alpha = new ModuleInstaller().ReinstallAll().Result;
             List<string> activeModules = UtilMan.GetAllStartUp();
             if (activeModules != null)
             {

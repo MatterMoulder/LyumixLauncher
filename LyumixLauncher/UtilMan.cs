@@ -20,12 +20,14 @@ namespace LyumixLauncher
         {
             public string srvc;
             public string name;
+            public int version;
             public string link;
         }
         public class LServices
         {
 
             public string name;
+            public int version;
             public bool state;
         }
 
@@ -138,6 +140,13 @@ namespace LyumixLauncher
             notifyIcon.BalloonTipTitle = "Lyumix Launcher";
             notifyIcon.BalloonTipText = txt;
             notifyIcon.ShowBalloonTip(3000);
+        }
+
+        public class ServiceJsonClass
+        {
+            public string Name { get; set; }
+            public int Version { get; set; }
+            public string Link { get; set; }
         }
     }
 }
