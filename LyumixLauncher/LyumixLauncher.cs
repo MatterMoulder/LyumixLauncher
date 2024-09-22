@@ -1,3 +1,5 @@
+using static FlaUI.Core.FrameworkAutomationElementBase;
+
 namespace LyumixLauncher
 {
     public partial class LyumixLauncher : Form
@@ -70,7 +72,13 @@ namespace LyumixLauncher
                         enableStartUp.Checked = moduleState; // Set initial check state
                         enableStartUp.CheckOnClick = true; // Allow the item to be checked/unchecked on click
                         enableStartUp.Click += (s, ev) => StartWithSys_Click(s, ev, clickedButton);
+
+                        ToolStripMenuItem changeSettings = new ToolStripMenuItem();
+                        changeSettings = new ToolStripMenuItem("Change settings");
+                        changeSettings.Click += (s, ev) => ChangeSettings_Click(s, ev, moduleName, clickedButton.Text);
+
                         contextMenuStrip.Items.Add(enableStartUp);
+                        contextMenuStrip.Items.Add(changeSettings);
 
                         contextMenuStrip.Show(clickedButton, e.Location);
                         return;
@@ -103,6 +111,14 @@ namespace LyumixLauncher
             {
                 UtilMan.UpdateStartUp(clickedButton.Name, item.Checked);
             }
+        }
+
+        private void ChangeSettings_Click(object sender, EventArgs e, string moduleName, string moduleDisplayName)
+        {
+            ModuleInstaller installer = new ModuleInstaller();
+            List<PropertyItem> properties = installer.DiscoverProperties(moduleName);
+            ModuleSettings settingsWindow = new ModuleSettings(properties, moduleName, moduleDisplayName);
+            settingsWindow.ShowDialog();
         }
     }
 }

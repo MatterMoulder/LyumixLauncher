@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Swan.Formatters;
+using System;
+using System.Reflection;
 using System.Text.Json;
+using static LyumixLauncher.ModuleStarter;
 
 namespace LyumixLauncher
 {
@@ -49,7 +52,57 @@ namespace LyumixLauncher
 
         }
 
-        public async Task<bool> ReinstallAll()
+        public List<PropertyItem> DiscoverProperties(string moduleName)
+        {
+            string dllPath = Path.Combine(UtilMan.modulePath, $"{moduleName}.dll");
+            Assembly assembly = Assembly.LoadFrom(dllPath);
+            /*
+            foreach (Type type in assembly.GetTypes())
+            {
+                foreach (PropertyInfo property in type.GetProperties())
+                {
+                    if (property.PropertyType.ToString() == "System.Boolean")
+                    {
+                        Logger.Trace(property.Name + " - " + property.PropertyType + " - " + type.GetProperty(property.Name).);
+                    }                    
+                }
+            }*/
+
+            Type moduleType = assembly.GetType($"{moduleName}.Main");
+            object loadedModuleInstance = Activator.CreateInstance(moduleType);
+            MethodInfo getJsonSettingsMethod = moduleType.GetMethod("GetProperties");
+
+            if (getJsonSettingsMethod != null)
+            {
+                string propertiesRaw = (string)getJsonSettingsMethod.Invoke(loadedModuleInstance, null);
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true // To ignore case differences between JSON and C# properties
+                };
+
+                List<PropertyItem> properties = JsonSerializer.Deserialize<List<PropertyItem>>(propertiesRaw, options);
+
+                return properties;
+            }
+            else
+            {
+                Console.WriteLine($"GetJsonSettings method not found in {moduleName}.Main");
+            }
+            return null;
+        }
+
+        public void ChangeSettings(string moduleName, Dictionary<string, object> properties)
+        {
+            string dllPath = Path.Combine(UtilMan.modulePath, $"{moduleName}.dll");
+            Assembly assembly = Assembly.LoadFrom(dllPath);
+            Type localType = assembly.GetType($"{moduleName}.Main");
+            object loadedModuleInstance = Activator.CreateInstance(localType);
+
+            MethodInfo updateMethod = localType.GetMethod("UpdateProperties");
+            updateMethod.Invoke(loadedModuleInstance, new object[] { properties });
+        }
+
+            public async Task<bool> ReinstallAll()
         {
             ModuleInstaller installer = new ModuleInstaller();
             foreach (string item in UtilMan.GetAllInstalled())
