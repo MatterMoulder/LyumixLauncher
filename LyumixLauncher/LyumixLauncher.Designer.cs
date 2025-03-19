@@ -115,16 +115,16 @@ namespace LyumixLauncher
                 yPos += 80; // Move down for the next button
                 btnCount++;
             }
-            if (btnCount > 5)
+            if (btnCount > 3)
             {
-                this.MaximumSize = new Size(300, 470);
-                this.MinimumSize = new Size(300, 470);
-                this.Size = new Size(300, 470);
+                this.MaximumSize = new Size(300, 270);
+                this.MinimumSize = new Size(300, 270);
+                this.Size = new Size(300, 270);
             } else
             {
-                this.MaximumSize = new Size(289, 470);
-                this.MinimumSize = new Size(289, 470);
-                this.Size = new Size(289, 470);
+                this.MaximumSize = new Size(289, 270);
+                this.MinimumSize = new Size(289, 270);
+                this.Size = new Size(289, 270);
             }
         }
 

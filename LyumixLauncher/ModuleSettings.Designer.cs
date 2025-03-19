@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ModuleSettings));
             SuspendLayout();
             // 
             // ModuleSettings
@@ -35,6 +36,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(344, 411);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximumSize = new Size(360, 450);
             MinimumSize = new Size(360, 450);
             Name = "ModuleSettings";
