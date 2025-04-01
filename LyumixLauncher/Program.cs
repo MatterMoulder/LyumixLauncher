@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -12,7 +13,7 @@ namespace LyumixLauncher
         static string jsonLib = "https://github.com/MatterMoulder/LLupdate/raw/main/Newtonsoft.Json.dll";
         static string versionFileUrl = "https://raw.githubusercontent.com/MatterMoulder/LLupdate/main/version.txt";
         static string repoUrl = "https://api.github.com/repos/MatterMoulder/LLupdate/contents";
-        static string currentVersion = "0.5.8";
+        static string currentVersion = "0.6.0";
 
         [STAThread]
         static async Task Main(string[] args)
@@ -24,6 +25,11 @@ namespace LyumixLauncher
             {
                 return;
             }
+
+            ApplicationConfiguration.Initialize();
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
 
             UtilMan.InitNotify();
 
@@ -54,10 +60,6 @@ namespace LyumixLauncher
                 }
             }
 #endif
-
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            ApplicationConfiguration.Initialize();
             UtilMan.Init();
             if (!startedInOffline)
             {
