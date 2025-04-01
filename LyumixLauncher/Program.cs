@@ -12,7 +12,7 @@ namespace LyumixLauncher
         static string jsonLib = "https://github.com/MatterMoulder/LLupdate/raw/main/Newtonsoft.Json.dll";
         static string versionFileUrl = "https://raw.githubusercontent.com/MatterMoulder/LLupdate/main/version.txt";
         static string repoUrl = "https://api.github.com/repos/MatterMoulder/LLupdate/contents";
-        static string localVersionFile = "version.txt";
+        static string currentVersion = "0.5.8";
 
         [STAThread]
         static async Task Main(string[] args)
@@ -25,18 +25,24 @@ namespace LyumixLauncher
                 return;
             }
 
+            UtilMan.InitNotify();
+
             bool startedInOffline = args.Contains("/offline");
 #if !DEBUG
             bool isUpdated = args.Contains("/updated");
+            if (isUpdated)
+            {
+                UtilMan.SendNotify("Update complete!");
+            }
             if (!startedInOffline || !isUpdated)
             {
                 try
                 {
                     string latestVersion = GetLatestVersion();
-                    string currentVersion = File.Exists(localVersionFile) ? File.ReadAllText(localVersionFile).Trim() : "0.0.0";
                     
                     if (latestVersion != currentVersion)
                     {
+                        UtilMan.SendNotify("Starting update...");
                         Console.WriteLine("Updating application...");
                         Process.Start("LyumixLauncherUpdater.exe");
                         return;
@@ -89,7 +95,7 @@ namespace LyumixLauncher
             UtilMan.CreateStripMenu(contextMenu);
             UtilMan.notifyIcon.DoubleClick += NotifyIcon_DoubleClick;
             bool startedByStartup = args.Contains("/startup");
-            launcher = new LyumixLauncher();
+            launcher = new LyumixLauncher(currentVersion);
             if (!startedByStartup)
             {
 #if !DEBUG
@@ -118,7 +124,7 @@ namespace LyumixLauncher
             }
             catch (Exception ex) when (ex is NullReferenceException || ex is InvalidOperationException)
             {
-                launcher = new LyumixLauncher();
+                launcher = new LyumixLauncher(currentVersion);
                 launcher.Show();
                 launcher.Focus();
             }
@@ -139,7 +145,7 @@ namespace LyumixLauncher
             }
             catch (Exception ex) when (ex is NullReferenceException || ex is InvalidOperationException)
             {
-                launcher = new LyumixLauncher();
+                launcher = new LyumixLauncher(currentVersion);
                 launcher.Show();
                 launcher.Focus();
             }

@@ -17,12 +17,12 @@ namespace LyumixLauncher
         private List<PropertyItem> _properties;
         private string _moduleName;
 
-        public ModuleSettings(List<PropertyItem> properties, string moduleName, string moduleDisplayName)
+        public ModuleSettings(List<PropertyItem> properties, string moduleName, string moduleDisplayName, int moduleVersion)
         {
             _properties = properties;
             _moduleName = moduleName;
-            this.Text = moduleDisplayName + " Settings"; // e.g. "Module Settings"
-            this.Name = moduleDisplayName + " Settings"; // e.g. "Module Settings"
+            this.Text = moduleDisplayName + " (v" + moduleVersion + ") Settings"; // e.g. "Module Settings"
+            this.Name = moduleDisplayName + " (v" + moduleVersion + ") Settings"; // e.g. "Module Settings"
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             InitializeComponent();

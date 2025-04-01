@@ -31,16 +31,21 @@ namespace LyumixLauncher
             public bool state;
         }
 
-        public static void Init()
+        public static void InitNotify()
         {
-            var json = new WebClient().DownloadString("https://raw.githubusercontent.com/MatterMoulder/LLmodules/main/apps.json");
-            services = JsonConvert.DeserializeObject<List<Service>>(json) ?? new List<Service>(null);
             notifyIcon = new NotifyIcon
             {
                 Icon = Properties.Resources.LyumixICO,
                 Text = "Lyumix Launcher",
                 Visible = true
             };
+        }
+
+        public static void Init()
+        {
+            var json = new WebClient().DownloadString("https://raw.githubusercontent.com/MatterMoulder/LLmodules/main/apps.json");
+            services = JsonConvert.DeserializeObject<List<Service>>(json) ?? new List<Service>(null);
+
             if (Properties.Settings.Default.AutoRun.Length > 0)
             {
                 var lJson = Properties.Settings.Default.AutoRun;
@@ -147,6 +152,16 @@ namespace LyumixLauncher
             public string Name { get; set; }
             public int Version { get; set; }
             public string Link { get; set; }
+        }
+
+        public static int GetServiceVersionByName(string srvName)
+        {
+            return services.Find(s => s.name == srvName).version;
+        }
+
+        public static int GetServiceVersionBySrvc(string srvName)
+        {
+            return services.Find(s => s.srvc == srvName).version;
         }
     }
 }

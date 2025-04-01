@@ -39,9 +39,12 @@ namespace LyumixLauncher
                 // Assuming there's a method named "Stop" in your module
                 Type localType = type.Find(s => s.name == moduleName).type;
                 MethodInfo stopMethod = localType.GetMethod("Stop");
-                stopMethod.Invoke(loadedModules.Find(s => s.name == moduleName).obj, null);
-                loadedModules.Remove(loadedModules.Find(s => s.name == moduleName));
-                type.Remove(type.Find(s => s.name == moduleName));
+                object end = stopMethod.Invoke(loadedModules.Find(s => s.name == moduleName).obj, null);
+                if (end != null)
+                {
+                    loadedModules.Remove(loadedModules.Find(s => s.name == moduleName));
+                    type.Remove(type.Find(s => s.name == moduleName));
+                }
             }
             else
             {

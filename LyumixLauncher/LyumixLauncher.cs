@@ -5,9 +5,11 @@ namespace LyumixLauncher
     public partial class LyumixLauncher : Form
     {
         private int location = 0;
+        private string curVersion = "0.0.0";
 
-        public LyumixLauncher()
+        public LyumixLauncher(string currentVersion)
         {
+            curVersion = currentVersion;
             InitializeComponent();
             this.AutoScroll = true;
         }
@@ -117,7 +119,8 @@ namespace LyumixLauncher
         {
             ModuleInstaller installer = new ModuleInstaller();
             List<PropertyItem> properties = installer.DiscoverProperties(moduleName);
-            ModuleSettings settingsWindow = new ModuleSettings(properties, moduleName, moduleDisplayName);
+            int srvcVersion = UtilMan.GetServiceVersionBySrvc(moduleName);
+            ModuleSettings settingsWindow = new ModuleSettings(properties, moduleName, moduleDisplayName, srvcVersion);
             settingsWindow.ShowDialog();
         }
     }

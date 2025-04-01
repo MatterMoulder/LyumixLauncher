@@ -61,6 +61,7 @@ namespace LyumixLauncher
             // LyumixLauncher
             // 
             resources.ApplyResources(this, "$this");
+            Text = "Lyumix Launcher (v" + curVersion + ")";
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = darkBackground;
             ForeColor = darkForeground;
